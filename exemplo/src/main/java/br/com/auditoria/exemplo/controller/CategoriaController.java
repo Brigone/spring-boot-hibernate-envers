@@ -30,6 +30,15 @@ public class CategoriaController {
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
+    @RequestMapping(value = "/novaCategoria", method = RequestMethod.PUT)
+    public ResponseEntity<Categoria> novaCategoria(@RequestBody Categoria categoria) {
+        Categoria cat = categoriaService.findByNome(categoria.getNome());
+        if(cat != null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<Categoria>(categoriaService.save(categoria), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/adicionaProduto/{sku}", method = RequestMethod.PUT)
     public ResponseEntity<Categoria> adicionaProduto(@PathVariable String sku, @RequestBody Categoria categoria) {
         Produto produto = produtoService.findBySku(sku);
@@ -48,13 +57,13 @@ public class CategoriaController {
         return new ResponseEntity<Categoria>(cat, HttpStatus.OK);
     }
 
-
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public ResponseEntity<Categoria> novo() {
-        Categoria c = new Categoria();
-        c.setNome("Categoria 1");
-
-        return new ResponseEntity<Categoria>(categoriaService.save(c), HttpStatus.OK);
+    @RequestMapping("/{nome}")
+    public ResponseEntity<Categoria> consulta(@PathVariable String nome) {
+        Categoria cat = categoriaService.findByNome(nome);
+        if(cat != null)
+            return new ResponseEntity<Categoria>(cat, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping("/revisoes/{nome}")

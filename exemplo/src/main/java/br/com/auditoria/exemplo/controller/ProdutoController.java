@@ -22,24 +22,34 @@ public class ProdutoController {
     @Autowired
     private GenericRevisionRepository genericRevisionRepository;
 
-    @RequestMapping(value = "/alteraEstoque/{sku}", method = RequestMethod.PUT)
-    public ResponseEntity<Produto> alteraEstoque(@PathVariable String sku, @RequestBody Produto produto) {
-        Produto produtoObject = produtoService.findBySku(sku);
+    @RequestMapping(value = "/novoProduto", method = RequestMethod.PUT)
+    public ResponseEntity<Produto> novoProduto(@RequestBody Produto produto) {
+        Produto produtoObject = produtoService.findBySku(produto.getSku());
+        if(produtoObject != null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else {
+            return new ResponseEntity<Produto>(produtoService.save(produto), HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/alteraEstoque", method = RequestMethod.PUT)
+    public ResponseEntity<Produto> alteraEstoque(@RequestBody Produto produto) {
+        Produto produtoObject = produtoService.findBySku(produto.getSku());
         if(produto.getEstoque() != null)
             produtoObject.setEstoque(produto.getEstoque());
         return new ResponseEntity<Produto>(produtoService.save(produtoObject), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/alteraPreco/{sku}", method = RequestMethod.PUT)
-    public ResponseEntity<Produto> alteraPreco(@PathVariable String sku, @RequestBody Produto produto) {
-        Produto produtoObject = produtoService.findBySku(sku);
+    @RequestMapping(value = "/alteraPreco", method = RequestMethod.PUT)
+    public ResponseEntity<Produto> alteraPreco(@RequestBody Produto produto) {
+        Produto produtoObject = produtoService.findBySku(produto.getSku());
         if(produto.getPreco() != null)
             produtoObject.setPreco(produto.getPreco());
         return new ResponseEntity<Produto>(produtoService.save(produtoObject), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{sku}", method = RequestMethod.GET)
-    public ResponseEntity<Produto> get(@PathVariable String sku) {
+    public ResponseEntity<Produto> consulta(@PathVariable String sku) {
         Produto p = produtoService.findBySku(sku);
         if(p != null)
             return new ResponseEntity<Produto>(p, HttpStatus.OK);
@@ -55,17 +65,6 @@ public class ProdutoController {
             return new ResponseEntity<List<EntidadeComRevisao<Produto>>>(revisoes, HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public ResponseEntity<Produto> novo() {
-        Produto p = new Produto();
-        p.setNome("Produto 2");
-        p.setPreco(199d);
-        p.setSku("P02");
-        p.setEstoque(100);
-
-        return new ResponseEntity<Produto>(produtoService.save(p), HttpStatus.OK);
     }
 
 }

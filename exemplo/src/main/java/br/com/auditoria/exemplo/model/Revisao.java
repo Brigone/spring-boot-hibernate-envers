@@ -28,9 +28,11 @@ public class Revisao {
     @Column
     private String usuario;
 
-    public Revisao(Long revisaoId, Date revisaoData) {
+    public Revisao(Long revisaoId, Date revisaoData, String usuario, String ip) {
         this.revisaoId = revisaoId;
         this.revisaoData = revisaoData;
+        this.usuario = usuario;
+        this.ip = ip;
     }
 
     public Revisao() {
