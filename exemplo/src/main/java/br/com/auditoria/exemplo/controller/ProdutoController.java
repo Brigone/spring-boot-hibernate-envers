@@ -44,6 +44,15 @@ public class ProdutoController {
         return new ResponseEntity<Produto>(produtoService.save(produtoObject), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<List<Produto>> consulta() {
+        List<Produto> p = produtoService.findAll();
+        if(p != null)
+            return new ResponseEntity<List<Produto>>(p, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @RequestMapping(value = "/{sku}", method = RequestMethod.GET)
     public ResponseEntity<Produto> consulta(@PathVariable String sku) {
         Produto p = produtoService.findBySku(sku);

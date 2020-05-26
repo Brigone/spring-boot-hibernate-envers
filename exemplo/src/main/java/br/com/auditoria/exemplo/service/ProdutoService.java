@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.auditoria.exemplo.repository.ProdutoRepository;
 
+import java.util.List;
+
 @Service
 public class ProdutoService {
 
@@ -16,6 +18,9 @@ public class ProdutoService {
     }
     public Produto findBySku(String sku){
         return produtoRepository.findBySku(sku);
+    }
+    public List<Produto> findAll(){
+        return produtoRepository.findAll();
     }
     public Produto save(Produto produto){
         return produtoRepository.save(produto);
