@@ -60,10 +60,10 @@ public class ProdutoController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public ResponseEntity<Produto> novo() {
         Produto p = new Produto();
-        p.setNome("Produto 1");
-        p.setPreco(99d);
-        p.setSku("P01");
-        p.setEstoque(10);
+        p.setNome("Produto 2");
+        p.setPreco(199d);
+        p.setSku("P02");
+        p.setEstoque(100);
 
         return new ResponseEntity<Produto>(produtoService.save(p), HttpStatus.OK);
     }

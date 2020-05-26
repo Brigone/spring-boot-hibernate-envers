@@ -5,10 +5,7 @@ import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 
@@ -17,7 +14,8 @@ import java.util.Date;
 public class Revisao {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "revisao_Sequence")
+    @SequenceGenerator(name = "revisao_Sequence", sequenceName = "REVISAO_SEQ")
     @RevisionNumber
     private Long revisaoId;
 
@@ -26,6 +24,9 @@ public class Revisao {
 
     @Column
     private String ip;
+
+    @Column
+    private String usuario;
 
     public Revisao(Long revisaoId, Date revisaoData) {
         this.revisaoId = revisaoId;
@@ -57,5 +58,13 @@ public class Revisao {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 }
